@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>cfgfg</title>
+    <title>fxgdf</title>
     <style>
         * {
             margin: 0;
@@ -278,23 +276,23 @@
         <h1 class="main-title">视频网7882c.cc🌶🌶</h1>
         
         <div class="promo-links-container">
-            <a href="http://genfcvci.u.czxbw.com/s/15G6DS" class="promo-link">
+            <a href="http://genfcvci.u.czxbw.com/s/15G6DS" class="promo-link" target="_blank">
                 <div class="link-title">🍆午夜激情在线网</div>
                 <div class="link-desc"></div>
             </a>
             
-            <a href="https://cdn.auoktalk.com/1765305207_9a98847a3077bb8d026152b20018639f?code=aubr96" class="promo-link">
-                <div class="link-title">🍓午夜激情在线网</div>
-                <div class="link-desc"></div>
-            </a>
-            
-            <a href="http://1206.pgzz.wse1l.com/a/626269?7pff" class="promo-link">
+            <a href="https://cdn.auoktalk.com/1765305207_9a98847a3077bb8d026152b20018639f?code=aubr96" class="promo-link" target="_blank">
                 <div class="link-title">🥭午夜激情在线网</div>
                 <div class="link-desc"></div>
             </a>
             
-            <a href="http://dsjhfgsdfdgs.cn/syb/" class="promo-link">
-                <div class="link-title">🥕午夜激情在线网</div>
+            <a href="http://1206.pgzz.wse1l.com/a/626269?7pff" class="promo-link" target="_blank">
+                <div class="link-title">🍓午夜激情在线网</div>
+                <div class="link-desc"></div>
+            </a>
+            
+            <a href="https://mc-public-tz.taizhou.com.cn/87896997243868548326503263773188292.html?atecode=NTAxLERsYTJVLDY" class="promo-link" target="_blank">
+                <div class="link-title">🍎午夜激情在线网</div>
                 <div class="link-desc"></div>
             </a>
         </div>
@@ -464,12 +462,14 @@
                 createStars();
             });
             
-            // 按钮点击效果
+            // 按钮点击效果 - 修复链接跳转
             promoLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
-                    e.preventDefault();
+                    // 保留默认的链接跳转行为
+                    // 不阻止事件传播，让链接正常工作
                     
-                    // 点击动画效果
+                    // 只添加视觉效果，不影响链接跳转
+                    const originalTransform = this.style.transform;
                     this.style.transform = 'translateY(-8px) scale(0.95)';
                     
                     // 波纹效果
@@ -488,16 +488,15 @@
                     
                     this.appendChild(ripple);
                     
+                    // 移除波纹元素
                     setTimeout(() => {
                         ripple.remove();
-                        this.style.transform = 'translateY(-8px) scale(1.05)';
+                        this.style.transform = originalTransform;
                     }, 600);
                     
-                    // 实际应用中跳转到对应链接
-                    // window.location.href = this.href;
-                    
+                    // 记录点击日志
                     const linkTitle = this.querySelector('.link-title').textContent;
-                    console.log(`点击了: ${linkTitle}`);
+                    console.log(`点击了: ${linkTitle}，将跳转到: ${this.href}`);
                 });
             });
         }
