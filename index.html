@@ -1,281 +1,348 @@
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fxgdf</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>fxgdf</title>
+<style>
+    /* ================= 基础重置 ================= */
+    *, *::before, *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        height: 100vh;
+        height: 100dvh;
+        overflow: hidden;
+        background: #000;
+        color: #fff;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* ================= 星空背景（深空星云） ================= */
+    .stars-container {
+        position: fixed;
+        inset: 0;
+        z-index: 1;
+        background:
+            radial-gradient(circle at 15% 20%, rgba(108, 84, 220, 0.30), transparent 45%),
+            radial-gradient(circle at 85% 80%, rgba(220, 90, 170, 0.22), transparent 45%),
+            radial-gradient(circle at 50% 55%, rgba(60, 100, 200, 0.18), transparent 60%),
+            linear-gradient(135deg, #050518 0%, #0e0a30 50%, #050518 100%);
+        transition: filter 2.5s ease-in-out;
+    }
+
+    .star {
+        position: absolute;
+        background-color: #fff;
+        border-radius: 50%;
+        animation: twinkle 5s infinite alternate;
+        will-change: opacity;
+        box-shadow: 0 0 5px rgba(190, 215, 255, 0.7);
+    }
+
+    @keyframes twinkle {
+        0%, 100% { opacity: .25; }
+        50%      { opacity: 1;   }
+    }
+
+    /* ================= 月亮（暖金珍珠） ================= */
+    .moon-container {
+        position: absolute;
+        top: 50px;
+        right: 50px;
+        width: 120px;
+        height: 120px;
+        z-index: 2;
+        animation: moonMove 20s ease-in-out infinite alternate;
+        will-change: transform;
+    }
+
+    .moon {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background:
+            radial-gradient(circle at 35% 35%,
+                #fffef8 0%,
+                #fdf4c8 35%,
+                #f5e091 65%,
+                #e6c76a 100%);
+        animation: moonGlow 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes moonMove {
+        0%   { transform: translateX(0);      }
+        25%  { transform: translateX(-50px);  }
+        50%  { transform: translateX(-100px); }
+        75%  { transform: translateX(-50px);  }
+        100% { transform: translateX(0);      }
+    }
+
+    @keyframes moonGlow {
+        0%, 100% {
+            box-shadow:
+                0 0 30px rgba(255, 248, 210, 0.95),
+                0 0 70px rgba(255, 235, 160, 0.55),
+                0 0 120px rgba(255, 220, 130, 0.30),
+                inset -10px -10px 25px rgba(180, 150, 60, 0.35),
+                inset 8px 8px 20px rgba(255, 255, 245, 0.60);
         }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
-            height: 100vh;
-            background: #000;
-            color: white;
+        50% {
+            box-shadow:
+                0 0 45px rgba(255, 248, 210, 1),
+                0 0 95px rgba(255, 235, 160, 0.75),
+                0 0 160px rgba(255, 220, 130, 0.45),
+                inset -10px -10px 25px rgba(180, 150, 60, 0.45),
+                inset 8px 8px 25px rgba(255, 255, 245, 0.85);
         }
-        
-        .stars-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            transition: background-color 2s ease-in-out;
-            background: linear-gradient(135deg, #0c0c2e 0%, #1a1a4a 50%, #0c0c2e 100%);
-        }
-        
-        .star {
-            position: absolute;
-            background-color: white;
-            border-radius: 50%;
-            animation: twinkle 5s infinite alternate;
-        }
-        
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-        
-        /* 月亮样式 - 固定满月，只做左右移动 */
-        .moon-container {
-            position: absolute;
-            top: 50px;
-            right: 50px;
-            width: 120px;
-            height: 120px;
-            z-index: 2;
-            animation: moonMove 20s ease-in-out infinite alternate;
-        }
-        
-        .moon {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #f5f3ce, #f0e68c);
-            box-shadow: 0 0 40px rgba(255, 255, 200, 0.8),
-                        0 0 80px rgba(255, 255, 200, 0.4),
-                        inset 10px 0 20px rgba(255, 255, 255, 0.5);
-        }
-        
-        /* 月亮左右移动动画 */
-        @keyframes moonMove {
-            0% {
-                transform: translateX(0);
-            }
-            25% {
-                transform: translateX(-50px);
-            }
-            50% {
-                transform: translateX(-100px);
-            }
-            75% {
-                transform: translateX(-50px);
-            }
-            100% {
-                transform: translateX(0);
-            }
-        }
-        
-        .container {
-            position: relative;
-            z-index: 3;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .main-title {
-            font-size: 3.2rem;
-            margin-bottom: 40px;
-            background: linear-gradient(to right, #ff7e5f, #feb47b, #86a8e7, #91eae4);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
-            letter-spacing: 2px;
-            font-weight: 800;
-        }
-        
-        .promo-links-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            width: 90%;
-            max-width: 1200px;
-            margin-top: 20px;
-        }
-        
-        /* 胶囊按钮样式 - 调整尺寸为高100px，宽250px */
-        .promo-link {
-            width: 250px;
-            height: 100px;
-            padding: 15px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            /* 胶囊型样式 - 高度的一半作为圆角半径 */
-            border-radius: 50px;
-            background: linear-gradient(45deg, #6a5acd, #836fff);
-            box-shadow: 0 10px 25px rgba(106, 90, 205, 0.5);
-        }
-        
-        .promo-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            /* 胶囊型圆角保持一致 */
-            border-radius: 50px;
-            z-index: 1;
-        }
-        
+    }
+
+    /* ================= 主内容 ================= */
+    .container {
+        position: relative;
+        z-index: 3;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        height: 100dvh;
+        padding: 20px;
+        text-align: center;
+    }
+
+    /* 电影感金→玫瑰→紫→蓝渐变标题 */
+    .main-title {
+        font-size: 3.2rem;
+        margin-bottom: 40px;
+        background: linear-gradient(120deg,
+            #ffd89b 0%,
+            #ff9a9e 30%,
+            #c471ed 60%,
+            #4facfe 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 0 30px rgba(196, 113, 237, 0.35);
+        letter-spacing: 2px;
+        font-weight: 800;
+    }
+
+    .promo-links-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        justify-items: center;
+        gap: 20px;
+        width: 90%;
+        max-width: 1200px;
+        margin-top: 20px;
+    }
+
+    /* ================= 胶囊按钮 ================= */
+    .promo-link {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 250px;
+        height: 100px;
+        padding: 15px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #fff;
+        text-decoration: none;
+        border: none;
+        border-radius: 50px;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.55),
+                    0 4px 10px rgba(0, 0, 0, 0.35);
+        cursor: pointer;
+        transition: transform .3s ease, box-shadow .3s ease;
+        -webkit-tap-highlight-color: transparent;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.28);
+    }
+
+    .promo-link::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 50px;
+        background: linear-gradient(45deg,
+            transparent 30%,
+            rgba(255, 255, 255, 0.18) 50%,
+            transparent 70%);
+        z-index: 1;
+    }
+
+    .link-title {
+        position: relative;
+        z-index: 2;
+        font-size: 1.4rem;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 8px;
+        letter-spacing: .5px;
+    }
+
+    .link-desc {
+        position: relative;
+        z-index: 2;
+        font-size: .85rem;
+        line-height: 1.3;
+        max-width: 90%;
+        padding: 0 10px;
+        opacity: .92;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
         .promo-link:hover {
             transform: translateY(-8px) scale(1.05);
-            box-shadow: 0 15px 35px rgba(106, 90, 205, 0.7);
+            box-shadow: 0 18px 40px rgba(102, 126, 234, 0.75),
+                        0 6px 14px rgba(0, 0, 0, 0.45);
         }
-        
-        .link-title {
-            font-size: 1.4rem;
-            margin-bottom: 8px;
-            font-weight: 700;
-            z-index: 2;
-            line-height: 1.2;
+    }
+
+    .promo-link:active {
+        transform: translateY(-4px) scale(.98);
+    }
+
+    .promo-link:focus-visible {
+        outline: 3px solid rgba(255, 255, 255, 0.9);
+        outline-offset: 4px;
+    }
+
+    .promo-link .ripple {
+        position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(circle,
+            rgba(255, 255, 255, 0.55) 0%,
+            rgba(255, 255, 255, 0) 70%);
+        transform: scale(0);
+        animation: ripple .65s ease-out forwards;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    @keyframes ripple {
+        to { transform: scale(2.6); opacity: 0; }
+    }
+
+    /* ================= 烟花画布 ================= */
+    .fireworks-canvas {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 3;
+    }
+
+    /* ================= 响应式 ================= */
+    @media (max-width: 1200px) {
+        .promo-links-container {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
         }
-        
-        .link-desc {
-            font-size: 0.85rem;
-            opacity: 0.9;
-            max-width: 90%;
-            line-height: 1.3;
-            z-index: 2;
-            padding: 0 10px;
+
+        .main-title { font-size: 2.8rem; }
+
+        .moon-container {
+            width: 90px;
+            height: 90px;
+            top: 30px;
+            right: 30px;
+            animation-name: moonMoveMd;
         }
-        
-        .fireworks-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 3;
+
+        @keyframes moonMoveMd {
+            0%   { transform: translateX(0);     }
+            25%  { transform: translateX(-30px); }
+            50%  { transform: translateX(-60px); }
+            75%  { transform: translateX(-30px); }
+            100% { transform: translateX(0);     }
         }
-        
-        /* 响应式设计 */
-        @media (max-width: 1200px) {
-            .promo-links-container {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 25px;
-            }
-            
-            .main-title {
-                font-size: 2.8rem;
-            }
-            
-            .moon-container {
-                width: 90px;
-                height: 90px;
-                top: 30px;
-                right: 30px;
-            }
-            
-            @keyframes moonMove {
-                0% { transform: translateX(0); }
-                25% { transform: translateX(-30px); }
-                50% { transform: translateX(-60px); }
-                75% { transform: translateX(-30px); }
-                100% { transform: translateX(0); }
-            }
+    }
+
+    @media (max-width: 768px) {
+        .promo-links-container {
+            grid-template-columns: 1fr;
+            gap: 20px;
+            width: 95%;
         }
-        
-        @media (max-width: 768px) {
-            .promo-links-container {
-                grid-template-columns: 1fr;
-                gap: 20px;
-                width: 95%;
-            }
-            
-            .main-title {
-                font-size: 2.2rem;
-                margin-bottom: 30px;
-            }
-            
-            .moon-container {
-                width: 70px;
-                height: 70px;
-                top: 20px;
-                right: 20px;
-            }
-            
-            .promo-link {
-                width: 250px;
-                height: 100px;
-                margin: 0 auto;
-            }
-            
-            @keyframes moonMove {
-                0% { transform: translateX(0); }
-                25% { transform: translateX(-20px); }
-                50% { transform: translateX(-40px); }
-                75% { transform: translateX(-20px); }
-                100% { transform: translateX(0); }
-            }
+
+        .main-title {
+            font-size: 2.2rem;
+            margin-bottom: 30px;
         }
-        
-        @media (max-width: 480px) {
-            .promo-link {
-                width: 220px;
-                height: 90px;
-            }
-            
-            .link-title {
-                font-size: 1.2rem;
-            }
-            
-            .link-desc {
-                font-size: 0.75rem;
-            }
+
+        .moon-container {
+            width: 70px;
+            height: 70px;
+            top: 20px;
+            right: 20px;
+            animation-name: moonMoveSm;
         }
-    </style>
+
+        @keyframes moonMoveSm {
+            0%   { transform: translateX(0);     }
+            25%  { transform: translateX(-20px); }
+            50%  { transform: translateX(-40px); }
+            75%  { transform: translateX(-20px); }
+            100% { transform: translateX(0);     }
+        }
+    }
+
+    @media (max-width: 480px) {
+        .promo-link {
+            width: 220px;
+            height: 90px;
+        }
+
+        .link-title { font-size: 1.2rem; }
+        .link-desc  { font-size: .75rem; }
+    }
+
+    @media (max-height: 700px) {
+        body { overflow-y: auto; }
+        .container {
+            height: auto;
+            min-height: 100dvh;
+            padding: 40px 20px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .star,
+        .moon,
+        .moon-container {
+            animation: none !important;
+        }
+        .stars-container { transition: none; }
+    }
+</style>
 </head>
 <body>
     <!-- 星空背景容器 -->
     <div class="stars-container" id="starsContainer"></div>
-    
+
     <!-- 月亮容器 - 固定满月，只做左右移动 -->
     <div class="moon-container">
         <div class="moon"></div>
     </div>
-    
+
     <!-- 烟花画布 -->
     <canvas class="fireworks-canvas" id="fireworksCanvas"></canvas>
-    
+
     <!-- 主要内容 -->
     <div class="container">
-        <h1 class="main-title">4K高清影院</h1>这个浏览器不行换个浏览器
-         
-       <div class="promo-links-container">
+        <h1 class="main-title">🍎午夜影院🍎</h1>这个浏览器不行换个浏览器
+
+        <div class="promo-links-container">
             <a href="http://kjrranxx.r.hzmyjd.cn/s/15G7aG" class="promo-link" target="_blank">
                 <div class="link-title">🍆午夜激情在线网</div>
                 <div class="link-desc">网址7882c.cc</div>
@@ -295,260 +362,300 @@
                 <div class="link-title">🍎午夜激情在线网</div>
                 <div class="link-desc">网址7882c.cc</div>
             </a>
-           
-       
-       </div>
+        </div>
     </div>
-    
-    <script>
-        // 获取DOM元素
-        const starsContainer = document.getElementById('starsContainer');
-        const fireworksCanvas = document.getElementById('fireworksCanvas');
-        const ctx = fireworksCanvas.getContext('2d');
-        const promoLinks = document.querySelectorAll('.promo-link');
-        
-        // 设置画布尺寸
-        fireworksCanvas.width = window.innerWidth;
-        fireworksCanvas.height = window.innerHeight;
-        
-        // 星空背景颜色数组
-        const bgColors = [
-            'linear-gradient(135deg, #0c0c2e 0%, #1a1a4a 50%, #0c0c2e 100%)',
-            'linear-gradient(135deg, #1a0b2e 0%, #2d1b69 50%, #1a0b2e 100%)',
-            'linear-gradient(135deg, #0b2e1a 0%, #1b693d 50%, #0b2e1a 100%)',
-            'linear-gradient(135deg, #2e0b0b 0%, #691b1b 50%, #2e0b0b 100%)',
-            'linear-gradient(135deg, #2e2b0b 0%, #69651b 50%, #2e2b0b 100%)',
-            'linear-gradient(135deg, #0b2e2e 0%, #1b6969 50%, #0b2e2e 100%)'
-        ];
-        
-        // 胶囊按钮统一颜色数组
-        const capsuleColors = [
-            {color1: '#6a5acd', color2: '#836fff'},
-            {color1: '#FF416C', color2: '#FF4B2B'},
-            {color1: '#38ef7d', color2: '#11998e'},
-            {color1: '#f7971e', color2: '#ffd200'},
-            {color1: '#4A00E0', color2: '#8E2DE2'},
-            {color1: '#00b09b', color2: '#96c93d'},
-            {color1: '#ff0084', color2: '#33001b'},
-            {color1: '#3a7bd5', color2: '#00d2ff'},
-            {color1: '#DA4453', color2: '#89216B'},
-            {color1: '#f46b45', color2: '#eea849'}
-        ];
-        
-        let currentColorIndex = 0;
-        
-        // 创建星星
-        function createStars() {
-            starsContainer.innerHTML = '';
-            const starCount = 300;
-            
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                
-                const size = Math.random() * 3 + 1;
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-                
-                star.style.animationDelay = `${Math.random() * 5}s`;
-                star.style.animationDuration = `${Math.random() * 3 + 3}s`;
-                
-                starsContainer.appendChild(star);
+
+<script>
+(function () {
+    'use strict';
+
+    /* ================= 元素引用 ================= */
+    const starsContainer = document.getElementById('starsContainer');
+    const canvas         = document.getElementById('fireworksCanvas');
+    const ctx            = canvas.getContext('2d');
+    const promoLinks     = document.querySelectorAll('.promo-link');
+
+    const TAU = Math.PI * 2;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const view = { w: window.innerWidth, h: window.innerHeight };
+
+    /* ================= 画布尺寸（高清屏适配） ================= */
+    function resizeCanvas() {
+        view.w = window.innerWidth;
+        view.h = window.innerHeight;
+
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width  = Math.round(view.w * dpr);
+        canvas.height = Math.round(view.h * dpr);
+        canvas.style.width  = view.w + 'px';
+        canvas.style.height = view.h + 'px';
+
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    /* ================= 星空 ================= */
+    function createStars() {
+        const frag  = document.createDocumentFragment();
+        const count = view.w < 768 ? 150 : 300;
+
+        for (let i = 0; i < count; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+
+            const size = Math.random() * 3 + 1;
+            star.style.cssText =
+                'width:'  + size + 'px;' +
+                'height:' + size + 'px;' +
+                'left:'   + (Math.random() * 100).toFixed(2) + '%;' +
+                'top:'    + (Math.random() * 100).toFixed(2) + '%;' +
+                'animation-delay:'    + (Math.random() * 5).toFixed(2) + 's;' +
+                'animation-duration:' + (Math.random() * 3 + 3).toFixed(2) + 's;';
+
+            frag.appendChild(star);
+        }
+
+        starsContainer.replaceChildren(frag);
+    }
+
+    /* ================= 烟花粒子（对象池 + 时间步长） ================= */
+    const particles     = [];
+    const pool          = [];
+    const MAX_PARTICLES = 1400;
+
+    class Particle {
+        constructor() {
+            this.x = 0; this.y = 0;
+            this.vx = 0; this.vy = 0;
+            this.radius = 1;
+            this.color = '#fff';
+            this.alpha = 1;
+            this.decay = 0.01;
+        }
+
+        update(dt) {
+            this.x += this.vx * dt;
+            this.y += this.vy * dt;
+            this.alpha -= this.decay * dt;
+        }
+
+        draw() {
+            ctx.globalAlpha = this.alpha > 0 ? this.alpha : 0;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, TAU);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+    }
+
+    function hexToRgb(hex) {
+        let h = hex.replace('#', '');
+        if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+        const n = parseInt(h, 16);
+        return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+    }
+
+    function spawnFirework(cx, cy, color1, color2) {
+        const c1 = hexToRgb(color1);
+        const c2 = hexToRgb(color2);
+
+        const shades = [];
+        for (let s = 0; s < 6; s++) {
+            const t = s / 5;
+            shades.push(
+                'rgb(' +
+                Math.round(c1[0] + (c2[0] - c1[0]) * t) + ',' +
+                Math.round(c1[1] + (c2[1] - c1[1]) * t) + ',' +
+                Math.round(c1[2] + (c2[2] - c1[2]) * t) + ')'
+            );
+        }
+
+        const count = 200;
+        for (let i = 0; i < count; i++) {
+            if (particles.length >= MAX_PARTICLES) break;
+
+            const p = pool.pop() || new Particle();
+            const angle = Math.random() * TAU;
+            const speed = Math.random() * 4;
+
+            p.x = cx;
+            p.y = cy;
+            p.vx = Math.cos(angle) * speed;
+            p.vy = Math.sin(angle) * speed;
+            p.radius = Math.random() * 1.8 + 1;
+            p.color  = shades[(Math.random() * shades.length) | 0];
+            p.alpha  = 1;
+            p.decay  = Math.random() * 0.012 + 0.006;
+
+            particles.push(p);
+        }
+    }
+
+    /* ================= 动画主循环 ================= */
+    let rafId    = null;
+    let lastTime = 0;
+
+    function animate(now) {
+        if (lastTime === 0) lastTime = now;
+
+        let dt = (now - lastTime) / 16.6667;
+        lastTime = now;
+        if (dt > 3)  dt = 3;
+        if (dt <= 0) dt = 1;
+
+        ctx.clearRect(0, 0, view.w, view.h);
+
+        let i = 0;
+        while (i < particles.length) {
+            const p = particles[i];
+            p.update(dt);
+
+            if (p.alpha <= 0) {
+                pool.push(p);
+                const last = particles.pop();
+                if (i < particles.length) particles[i] = last;
+            } else {
+                p.draw();
+                i++;
             }
         }
-        
-        // 烟花粒子数组
-        let fireworks = [];
-        
-        // 烟花粒子类
-        class Particle {
-            constructor(x, y, color) {
-                this.x = x;
-                this.y = y;
-                this.color = color;
-                this.radius = Math.random() * 3 + 1;
-                this.speedX = Math.random() * 6 - 3;
-                this.speedY = Math.random() * 6 - 3;
-                this.alpha = 1;
-                this.decay = Math.random() * 0.015 + 0.005;
-            }
-            
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.alpha -= this.decay;
-            }
-            
-            draw() {
-                ctx.save();
-                ctx.globalAlpha = this.alpha;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-                ctx.restore();
-            }
+
+        ctx.globalAlpha = 1;
+        rafId = requestAnimationFrame(animate);
+    }
+
+    function startLoop() {
+        if (rafId === null && !reduceMotion) {
+            lastTime = 0;
+            rafId = requestAnimationFrame(animate);
         }
-        
-        // 创建烟花效果
-        function createFirework() {
-            const x = Math.random() * fireworksCanvas.width;
-            const y = Math.random() * fireworksCanvas.height;
-            
-            const currentColors = capsuleColors[currentColorIndex];
-            const color = currentColors.color1;
-            
-            const particleCount = 200;
-            for (let i = 0; i < particleCount; i++) {
-                fireworks.push(new Particle(x, y, color));
-            }
+    }
+
+    function stopLoop() {
+        if (rafId !== null) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
         }
-        
-        // 动画循环
-        function animate() {
-            ctx.clearRect(0, 0, fireworksCanvas.width, fireworksCanvas.height);
-            
-            for (let i = fireworks.length - 1; i >= 0; i--) {
-                fireworks[i].update();
-                fireworks[i].draw();
-                
-                if (fireworks[i].alpha <= 0) {
-                    fireworks.splice(i, 1);
-                }
-            }
-            
-            requestAnimationFrame(animate);
+    }
+
+    /* ================= 配色（10 组精选渐变） ================= */
+    const capsuleColors = [
+        { color1: '#667eea', color2: '#764ba2' },  // 紫罗兰梦
+        { color1: '#f5576c', color2: '#f093fb' },  // 玫瑰粉
+        { color1: '#4facfe', color2: '#00c6fb' },  // 海洋蓝
+        { color1: '#fa709a', color2: '#f5576c' },  // 蜜桃玫瑰
+        { color1: '#11998e', color2: '#38ef7d' },  // 翡翠
+        { color1: '#8E2DE2', color2: '#4A00E0' },  // 深紫星空
+        { color1: '#f83600', color2: '#fe8c00' },  // 火焰橘
+        { color1: '#5b247a', color2: '#1bcedf' },  // 皇家青
+        { color1: '#c471ed', color2: '#f64f59' },  // 浆果紫红
+        { color1: '#2b5876', color2: '#4e4376' }   // 午夜蓝
+    ];
+
+    let currentColorIndex = 0;
+    let currentColors = capsuleColors[0];
+
+    /* ================= 背景变化（色相旋转，平滑过渡） ================= */
+    let hue = 0;
+
+    function updateBackground() {
+        hue = (hue + 28 + Math.random() * 38) % 360;
+        starsContainer.style.filter = 'hue-rotate(' + hue.toFixed(1) + 'deg)';
+    }
+
+    /* ================= 按钮配色（四个按钮统一变色） ================= */
+    function updateCapsuleColors() {
+        currentColors = capsuleColors[currentColorIndex];
+        const c = currentColors;
+
+        promoLinks.forEach(function (link) {
+            link.style.background = 'linear-gradient(45deg, ' + c.color1 + ', ' + c.color2 + ')';
+            link.style.boxShadow =
+                '0 10px 25px ' + c.color1 + '8C,' +
+                '0 4px 10px rgba(0, 0, 0, 0.35)';
+        });
+
+        currentColorIndex = (currentColorIndex + 1) % capsuleColors.length;
+    }
+
+    /* ================= 放一朵烟花 ================= */
+    function createFirework() {
+        if (reduceMotion || document.hidden) return;
+
+        const c  = currentColors;
+        const cx = view.w * (0.15 + Math.random() * 0.70);
+        const cy = view.h * (0.15 + Math.random() * 0.55);
+
+        spawnFirework(cx, cy, c.color1, c.color2);
+    }
+
+    /* ================= 点击波纹（事件委托） ================= */
+    document.addEventListener('click', function (e) {
+        const link = e.target.closest && e.target.closest('.promo-link');
+        if (!link) return;
+
+        const rect = link.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+
+        let x = e.clientX;
+        let y = e.clientY;
+        /* 键盘（回车）触发时坐标是 0，改为从中心扩散 */
+        if (e.detail === 0) {
+            x = rect.left + rect.width / 2;
+            y = rect.top + rect.height / 2;
         }
-        
-        // 更新背景颜色
-        function updateBackground() {
-            const randomColor = bgColors[Math.floor(Math.random() * bgColors.length)];
-            starsContainer.style.background = randomColor;
+
+        const ripple = document.createElement('span');
+        ripple.className = 'ripple';
+        ripple.style.width  = size + 'px';
+        ripple.style.height = size + 'px';
+        ripple.style.left   = (x - rect.left - size / 2) + 'px';
+        ripple.style.top    = (y - rect.top  - size / 2) + 'px';
+
+        link.appendChild(ripple);
+        setTimeout(function () { ripple.remove(); }, 650);
+    }, { passive: true });
+
+    /* ================= 窗口尺寸变化（防抖） ================= */
+    let resizeTimer = null;
+
+    window.addEventListener('resize', function () {
+        resizeCanvas();
+
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(createStars, 200);
+    }, { passive: true });
+
+    /* ================= 页面切到后台时暂停动画 ================= */
+    document.addEventListener('visibilitychange', function () {
+        if (document.hidden) {
+            stopLoop();
+        } else {
+            startLoop();
         }
-        
-        // 更新胶囊按钮颜色（统一颜色）
-        function updateCapsuleColors() {
-            const currentColors = capsuleColors[currentColorIndex];
-            const color1 = currentColors.color1;
-            const color2 = currentColors.color2;
-            
-            promoLinks.forEach(link => {
-                link.style.background = `linear-gradient(45deg, ${color1}, ${color2})`;
-                link.style.boxShadow = `0 10px 25px ${color1}80`;
-            });
-            
-            currentColorIndex = (currentColorIndex + 1) % capsuleColors.length;
-        }
-        
-        // 初始化函数
-        function init() {
-            // 初始化元素
-            createStars();
-            updateBackground();
-            updateCapsuleColors();
-            createFirework();
-            animate();
-            
-            // 设置定时器
-            setInterval(updateBackground, 30000);     // 30秒变换背景
-            setInterval(createFirework, 15000);       // 15秒播放烟花
-            setInterval(updateCapsuleColors, 5000);   // 5秒变换胶囊按钮颜色
-            
-            // 窗口大小调整
-            window.addEventListener('resize', function() {
-                fireworksCanvas.width = window.innerWidth;
-                fireworksCanvas.height = window.innerHeight;
-                createStars();
-            });
-            
-            // 按钮点击效果 - 修复链接跳转
-            promoLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    // 保留默认的链接跳转行为
-                    // 不阻止事件传播，让链接正常工作
-                    
-                    // 只添加视觉效果，不影响链接跳转
-                    const originalTransform = this.style.transform;
-                    this.style.transform = 'translateY(-8px) scale(0.95)';
-                    
-                    // 波纹效果
-                    const ripple = document.createElement('div');
-                    const rect = this.getBoundingClientRect();
-                    const size = Math.max(rect.width, rect.height);
-                    
-                    ripple.style.position = 'absolute';
-                    ripple.style.width = ripple.style.height = `${size}px`;
-                    ripple.style.borderRadius = '50%';
-                    ripple.style.background = 'rgba(255, 255, 255, 0.3)';
-                    ripple.style.transform = 'scale(0)';
-                    ripple.style.animation = 'ripple 0.6s linear';
-                    ripple.style.top = `${e.clientY - rect.top - size/2}px`;
-                    ripple.style.left = `${e.clientX - rect.left - size/2}px`;
-                    
-                    this.appendChild(ripple);
-                    
-                    // 移除波纹元素
-                    setTimeout(() => {
-                        ripple.remove();
-                        this.style.transform = originalTransform;
-                    }, 600);
-                    
-                    // 记录点击日志
-                    const linkTitle = this.querySelector('.link-title').textContent;
-                    console.log(`点击了: ${linkTitle}，将跳转到: ${this.href}`);
-                });
-            });
-        }
-        
-        // 添加波纹动画样式
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
-            }
-            
-            @keyframes moonGlow {
-                0%, 100% { box-shadow: 0 0 40px rgba(255, 255, 200, 0.8),
-                                    0 0 80px rgba(255, 255, 200, 0.4),
-                                    inset 10px 0 20px rgba(255, 255, 255, 0.5); }
-                50% { box-shadow: 0 0 50px rgba(255, 255, 200, 0.9),
-                                0 0 100px rgba(255, 255, 200, 0.6),
-                                inset 10px 0 25px rgba(255, 255, 255, 0.7); }
-            }
-        `;
-        document.head.appendChild(style);
-        
-        // 为月亮添加发光动画
-        document.querySelector('.moon').style.animation = 'moonGlow 4s infinite alternate';
-        
-        // 页面加载完成后初始化
-        window.onload = init;
-    </script>
+    });
+
+    /* ================= 初始化 ================= */
+    function init() {
+        resizeCanvas();
+        createStars();
+        updateBackground();
+        updateCapsuleColors();
+
+        startLoop();
+        createFirework();
+
+        setInterval(createFirework,      15000); // 15 秒一朵烟花
+        setInterval(updateCapsuleColors,  5000); // 5 秒换一次按钮配色
+        setInterval(updateBackground,    30000); // 30 秒换一次星空色调
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+        init();
+    }
+})();
+</script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
